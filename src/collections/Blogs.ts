@@ -1,5 +1,33 @@
 import type { CollectionConfig } from 'payload'
 
+const hasAdminRole = (user: unknown): boolean => {
+  if (!user) {
+    return false
+  }
+
+  const { roles } = user as { roles?: unknown }
+
+  if (!Array.isArray(roles)) {
+    return false
+  }
+
+  return roles.some((role) => role === 'admin')
+}
+
+const getUserId = (user: unknown): string | number | null => {
+  if (!user) {
+    return null
+  }
+
+  const { id } = user as { id?: unknown }
+
+  if (typeof id === 'string' || typeof id === 'number') {
+    return id
+  }
+
+  return null
+}
+
 export const Blogs: CollectionConfig = {
   slug: 'blogs',
   admin: {
@@ -7,6 +35,7 @@ export const Blogs: CollectionConfig = {
     defaultColumns: ['title', 'author', 'status', 'publishedAt'],
   },
   access: {
+    create: ({ req: { user } }) => getUserId(user) !== null,
     read: ({ req: { user } }) => {
       // Public can read published posts
       if (!user) {
@@ -18,6 +47,49 @@ export const Blogs: CollectionConfig = {
       }
       // Logged in users can read all
       return true
+    },
+    update: ({ req: { user } }) => {
+      if (!user) {
+        return false
+      }
+
+      if (hasAdminRole(user)) {
+        return true
+      }
+
+      const userId = getUserId(user)
+
+      if (userId === null) {
+        return false
+      }
+
+      // Authors can only modify their own posts
+      return {
+        author: {
+          equals: userId,
+        },
+      }
+    },
+    delete: ({ req: { user } }) => {
+      if (!user) {
+        return false
+      }
+
+      if (hasAdminRole(user)) {
+        return true
+      }
+
+      const userId = getUserId(user)
+
+      if (userId === null) {
+        return false
+      }
+
+      return {
+        author: {
+          equals: userId,
+        },
+      }
     },
   },
   fields: [

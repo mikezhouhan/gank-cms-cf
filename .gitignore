@@ -42,6 +42,9 @@ next-env.d.ts
 
 /media
 
+# Payload CMS
+src/app/(payload)/admin/importMap.js
+
 # Playwright
 node_modules/
 /test-results/
