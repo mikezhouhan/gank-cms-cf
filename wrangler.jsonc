@@ -22,7 +22,7 @@
       "binding": "D1",
       "database_id": "bc25027a-992c-4edf-b1d0-7d55b871113a",
       "database_name": "gank-cms",
-      "remote": true,
+      // "remote": true,
     },
   ],
   "services": [
