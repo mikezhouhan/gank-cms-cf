@@ -102,9 +102,34 @@ export const Blogs: CollectionConfig = {
       name: 'slug',
       type: 'text',
       required: true,
-      unique: true,
       admin: {
         description: 'URL-friendly version of the title',
+      },
+      // Note: unique constraint removed to allow same slug for different locales
+      // Combined uniqueness enforced via hooks or application logic
+    },
+    {
+      name: 'locale',
+      type: 'select',
+      required: true,
+      defaultValue: 'en',
+      options: [
+        {
+          label: 'English',
+          value: 'en',
+        },
+        {
+          label: '简体中文',
+          value: 'zh-CN',
+        },
+        {
+          label: 'Deutsch',
+          value: 'de',
+        },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Language of the blog post',
       },
     },
     {
@@ -134,6 +159,22 @@ export const Blogs: CollectionConfig = {
       required: true,
       admin: {
         position: 'sidebar',
+      },
+    },
+    {
+      name: 'authorImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        position: 'sidebar',
+        description: 'Custom author image (overrides user avatar if set)',
+      },
+    },
+    {
+      name: 'authorLink',
+      type: 'text',
+      admin: {
+        description: 'Custom author profile link',
       },
     },
     {

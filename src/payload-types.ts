@@ -170,6 +170,10 @@ export interface Blog {
    * URL-friendly version of the title
    */
   slug: string;
+  /**
+   * Language of the blog post
+   */
+  locale: 'en' | 'zh-CN' | 'de';
   content: {
     root: {
       type: string;
@@ -194,6 +198,14 @@ export interface Blog {
    */
   featuredImage?: (number | null) | Media;
   author: number | User;
+  /**
+   * Custom author image (overrides user avatar if set)
+   */
+  authorImage?: (number | null) | Media;
+  /**
+   * Custom author profile link
+   */
+  authorLink?: string | null;
   status: 'draft' | 'published';
   /**
    * Date when the blog post was published
@@ -320,10 +332,13 @@ export interface MediaSelect<T extends boolean = true> {
 export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  locale?: T;
   content?: T;
   excerpt?: T;
   featuredImage?: T;
   author?: T;
+  authorImage?: T;
+  authorLink?: T;
   status?: T;
   publishedAt?: T;
   tags?:
