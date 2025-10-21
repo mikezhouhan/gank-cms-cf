@@ -2,6 +2,10 @@
 import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { searchPlugin } from '@payloadcms/plugin-search'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -12,6 +16,8 @@ import { r2Storage } from '@payloadcms/storage-r2'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Blogs } from './collections/Blogs'
+import { Posts } from './collections/Posts'
+import { Categories } from './collections/Categories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Blogs],
+  collections: [Users, Media, Blogs, Posts, Categories],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -39,6 +45,21 @@ export default buildConfig({
     r2Storage({
       bucket: cloudflare.env.R2,
       collections: { media: true },
+    }),
+    seoPlugin({
+      collections: ['posts'],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `Website — ${doc?.title || ''}`,
+      generateDescription: ({ doc }) => doc?.excerpt || '',
+    }),
+    redirectsPlugin({
+      collections: ['posts'],
+    }),
+    nestedDocsPlugin({
+      collections: ['categories'],
+    }),
+    searchPlugin({
+      collections: ['posts'],
     }),
   ],
 })
