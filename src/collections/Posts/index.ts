@@ -70,6 +70,7 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       type: 'tabs',
@@ -80,10 +81,12 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              localized: true,
             },
             {
               name: 'content',
               type: 'richText',
+              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -215,6 +218,27 @@ export const Posts: CollectionConfig<'posts'> = {
       ],
     },
     slugField(),
+    {
+      name: 'excerpt',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description: 'Short summary of the post for previews and SEO',
+      },
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
+      admin: {
+        description: 'Tags for categorizing posts',
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidatePost],

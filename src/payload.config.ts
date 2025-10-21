@@ -15,7 +15,6 @@ import { r2Storage } from '@payloadcms/storage-r2'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Blogs } from './collections/Blogs'
 import { Posts } from './collections/Posts'
 import { Categories } from './collections/Categories'
 
@@ -33,8 +32,26 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Blogs, Posts, Categories],
+  collections: [Users, Media, Posts, Categories],
   editor: lexicalEditor(),
+  localization: {
+    locales: [
+      {
+        label: 'English',
+        code: 'en',
+      },
+      {
+        label: '简体中文',
+        code: 'zh-CN',
+      },
+      {
+        label: 'Deutsch',
+        code: 'de',
+      },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

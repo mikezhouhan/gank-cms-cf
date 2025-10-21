@@ -69,7 +69,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    blogs: Blog;
     posts: Post;
     categories: Category;
     redirects: Redirect;
@@ -83,7 +82,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    blogs: BlogsSelect<false> | BlogsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -98,7 +96,7 @@ export interface Config {
   };
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'en' | 'zh-CN' | 'de';
   user: User & {
     collection: 'users';
   };
@@ -196,70 +194,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs".
- */
-export interface Blog {
-  id: number;
-  title: string;
-  /**
-   * URL-friendly version of the title
-   */
-  slug: string;
-  /**
-   * Language of the blog post
-   */
-  locale: 'en' | 'zh-CN' | 'de';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Short summary of the blog post
-   */
-  excerpt?: string | null;
-  /**
-   * Featured image for the blog post
-   */
-  featuredImage?: (number | null) | Media;
-  author: number | User;
-  /**
-   * Custom author image (overrides user avatar if set)
-   */
-  authorImage?: (number | null) | Media;
-  /**
-   * Custom author profile link
-   */
-  authorLink?: string | null;
-  status: 'draft' | 'published';
-  /**
-   * Date when the blog post was published
-   */
-  publishedAt?: string | null;
-  /**
-   * Tags for categorizing blog posts
-   */
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -304,6 +238,19 @@ export interface Post {
    */
   generateSlug?: boolean | null;
   slug: string;
+  /**
+   * Short summary of the post for previews and SEO
+   */
+  excerpt?: string | null;
+  /**
+   * Tags for categorizing posts
+   */
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -475,10 +422,6 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'blogs';
-        value: number | Blog;
-      } | null)
-    | ({
         relationTo: 'posts';
         value: number | Post;
       } | null)
@@ -588,31 +531,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs_select".
- */
-export interface BlogsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  locale?: T;
-  content?: T;
-  excerpt?: T;
-  featuredImage?: T;
-  author?: T;
-  authorImage?: T;
-  authorLink?: T;
-  status?: T;
-  publishedAt?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -638,6 +556,13 @@ export interface PostsSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  excerpt?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
