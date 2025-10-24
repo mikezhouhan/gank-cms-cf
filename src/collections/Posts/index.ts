@@ -70,8 +70,7 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
-      // TEMPORARY: Disabled to test if localization causes D1 object type error
-      // localized: true,
+      localized: true,
     },
     {
       type: 'tabs',
@@ -82,14 +81,12 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
-              // TEMPORARY: Disabled to test if localization causes D1 object type error
-              // localized: true,
+              localized: true,
             },
             {
               name: 'content',
               type: 'richText',
-              // TEMPORARY: Disabled to test if localization causes D1 object type error
-              // localized: true,
+              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -224,8 +221,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'excerpt',
       type: 'textarea',
-      // TEMPORARY: Disabled to test if localization causes D1 object type error
-      // localized: true,
+      localized: true,
       admin: {
         description: 'Short summary of the post for previews and SEO',
       },
@@ -249,15 +245,16 @@ export const Posts: CollectionConfig<'posts'> = {
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  versions: {
-    drafts: {
-      // autosave: {
-      //   interval: 100, // We set this interval for optimal live preview
-      // },
-      // DISABLED: autosave causes D1_TYPE_ERROR with localized rich text fields
-      // See: https://github.com/payloadcms/payload/issues/9876
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  // TEMPORARY: Disabled to test if versions + localization causes D1 object type error
+  // versions: {
+  //   drafts: {
+  //     // autosave: {
+  //     //   interval: 100, // We set this interval for optimal live preview
+  //     // },
+  //     // DISABLED: autosave causes D1_TYPE_ERROR with localized rich text fields
+  //     // See: https://github.com/payloadcms/payload/issues/9876
+  //     schedulePublish: true,
+  //   },
+  //   maxPerDoc: 50,
+  // },
 }
