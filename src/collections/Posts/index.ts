@@ -70,7 +70,8 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true,
+      // TEMPORARY: Disabled to test if localization causes D1 object type error
+      // localized: true,
     },
     {
       type: 'tabs',
@@ -81,12 +82,14 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
-              localized: true,
+              // TEMPORARY: Disabled to test if localization causes D1 object type error
+              // localized: true,
             },
             {
               name: 'content',
               type: 'richText',
-              localized: true,
+              // TEMPORARY: Disabled to test if localization causes D1 object type error
+              // localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -221,7 +224,8 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'excerpt',
       type: 'textarea',
-      localized: true,
+      // TEMPORARY: Disabled to test if localization causes D1 object type error
+      // localized: true,
       admin: {
         description: 'Short summary of the post for previews and SEO',
       },

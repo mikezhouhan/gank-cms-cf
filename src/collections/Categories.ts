@@ -20,7 +20,8 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true,
+      // TEMPORARY: Disabled to test if localization causes D1 object type error
+      // localized: true,
     },
     slugField({
       position: undefined,

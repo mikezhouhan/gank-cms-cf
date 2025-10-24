@@ -34,24 +34,25 @@ export default buildConfig({
   },
   collections: [Users, Media, Posts, Categories],
   editor: lexicalEditor(),
-  localization: {
-    locales: [
-      {
-        label: 'English',
-        code: 'en',
-      },
-      {
-        label: '简体中文',
-        code: 'zh-CN',
-      },
-      {
-        label: 'Deutsch',
-        code: 'de',
-      },
-    ],
-    defaultLocale: 'en',
-    fallback: true,
-  },
+  // TEMPORARY: Disabled to test if localization causes D1 object type error
+  // localization: {
+  //   locales: [
+  //     {
+  //       label: 'English',
+  //       code: 'en',
+  //     },
+  //     {
+  //       label: '简体中文',
+  //       code: 'zh-CN',
+  //     },
+  //     {
+  //       label: 'Deutsch',
+  //       code: 'de',
+  //     },
+  //   ],
+  //   defaultLocale: 'en',
+  //   fallback: true,
+  // },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
