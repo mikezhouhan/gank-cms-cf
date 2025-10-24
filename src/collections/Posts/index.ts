@@ -247,9 +247,11 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
+      // autosave: {
+      //   interval: 100, // We set this interval for optimal live preview
+      // },
+      // DISABLED: autosave causes D1_TYPE_ERROR with localized rich text fields
+      // See: https://github.com/payloadcms/payload/issues/9876
       schedulePublish: true,
     },
     maxPerDoc: 50,
