@@ -6,6 +6,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { openapi, swaggerUI } from 'payload-oapi'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -58,6 +59,14 @@ export default buildConfig({
   },
   db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
   plugins: [
+    openapi({
+      openapiVersion: '3.0',
+      metadata: {
+        title: 'Gank CMS API',
+        version: '1.0.0',
+      },
+    }),
+    swaggerUI({}),
     payloadCloudPlugin(),
     r2Storage({
       bucket: cloudflare.env.R2,
