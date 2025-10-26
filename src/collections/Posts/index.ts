@@ -245,16 +245,15 @@ export const Posts: CollectionConfig<'posts'> = {
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  // TEMPORARY: Disabled to test if versions + localization causes D1 object type error
-  // versions: {
-  //   drafts: {
-  //     // autosave: {
-  //     //   interval: 100, // We set this interval for optimal live preview
-  //     // },
-  //     // DISABLED: autosave causes D1_TYPE_ERROR with localized rich text fields
-  //     // See: https://github.com/payloadcms/payload/issues/9876
-  //     schedulePublish: true,
-  //   },
-  //   maxPerDoc: 50,
-  // },
+  // Re-enabled after migrating from D1 to PostgreSQL
+  // D1 had issues with versions + localization, but PostgreSQL handles it correctly
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100, // We set this interval for optimal live preview
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }

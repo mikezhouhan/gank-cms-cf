@@ -1,5 +1,5 @@
 // storage-adapter-import-placeholder
-import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -22,9 +22,13 @@ import { Categories } from './collections/Categories'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Detect environment: CLI commands use wrangler context, runtime uses async context
 const cloudflare = process.argv.find((value) => value.match(/^(generate|migrate):?/))
   ? await getCloudflareContextFromWrangler()
   : await getCloudflareContext({ async: true })
+
+// Check if running in local development (not in Cloudflare Workers)
+const isLocalDev = process.env.NODE_ENV !== 'production' && !cloudflare.env.HYPERDRIVE
 
 export default buildConfig({
   admin: {
@@ -57,7 +61,16 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
+  db: postgresAdapter({
+    pool: {
+      // Local development: use DATABASE_URL from .env
+      // Production/Workers: use Hyperdrive connection string
+      connectionString: process.env.DATABASE_URL || cloudflare.env.HYPERDRIVE?.connectionString || '',
+      // maxUses: 1 is required for Cloudflare Workers (no connection pooling)
+      // For local development, you can increase this for better performance
+      maxUses: isLocalDev ? undefined : 1,
+    },
+  }),
   plugins: [
     openapi({
       openapiVersion: '3.0',
@@ -68,10 +81,16 @@ export default buildConfig({
     }),
     swaggerUI({}),
     payloadCloudPlugin(),
-    r2Storage({
-      bucket: cloudflare.env.R2,
-      collections: { media: true },
-    }),
+    // R2 Storage: only enabled when R2 binding is available (production/wrangler dev)
+    // For local development with `next dev`, media uploads will be stored in database
+    ...(cloudflare.env.R2
+      ? [
+          r2Storage({
+            bucket: cloudflare.env.R2,
+            collections: { media: true },
+          }),
+        ]
+      : []),
     seoPlugin({
       collections: ['posts'],
       uploadsCollection: 'media',

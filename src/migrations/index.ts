@@ -1,33 +1,10 @@
-import * as migration_20250929_111647 from './20250929_111647';
-import * as migration_20251018_125342 from './20251018_125342';
-import * as migration_20251021_135928 from './20251021_135928';
-import * as migration_20251021_150109 from './20251021_150109';
-import * as migration_20251021_151748 from './20251021_151748';
+// PostgreSQL migrations will be generated here
+// Run: pnpm payload migrate:create
 
-export const migrations = [
-  {
-    up: migration_20250929_111647.up,
-    down: migration_20250929_111647.down,
-    name: '20250929_111647',
-  },
-  {
-    up: migration_20251018_125342.up,
-    down: migration_20251018_125342.down,
-    name: '20251018_125342',
-  },
-  {
-    up: migration_20251021_135928.up,
-    down: migration_20251021_135928.down,
-    name: '20251021_135928',
-  },
-  {
-    up: migration_20251021_150109.up,
-    down: migration_20251021_150109.down,
-    name: '20251021_150109',
-  },
-  {
-    up: migration_20251021_151748.up,
-    down: migration_20251021_151748.down,
-    name: '20251021_151748'
-  },
-];
+import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
+
+export const migrations: {
+  up: (args: MigrateUpArgs) => Promise<void>
+  down: (args: MigrateDownArgs) => Promise<void>
+  name: string
+}[] = []

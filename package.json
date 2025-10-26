@@ -7,9 +7,10 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "deploy": "pnpm run deploy:database && pnpm run deploy:app",
-    "deploy:app": "opennextjs-cloudflare build -e $CLOUDFLARE_ENV && opennextjs-cloudflare deploy -e $CLOUDFLARE_ENV",
-    "deploy:database": "NODE_ENV=production PAYLOAD_SECRET=ignore payload migrate && wrangler d1 execute D1 --command 'PRAGMA optimize' --remote",
+    "deploy:app": "opennextjs-cloudflare build -e production && opennextjs-cloudflare deploy -e production",
+    "deploy:database": "NODE_ENV=production CLOUDFLARE_ENV=production PAYLOAD_SECRET=ignore payload migrate",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 3600",
+    "dev:wrangler": "wrangler dev --env dev",
     "devsafe": "rm -rf .next && rm -rf .open-next && cross-env NODE_OPTIONS=--no-deprecation next dev -p 3600",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "pnpm run generate:types:cloudflare && pnpm run generate:types:payload",
@@ -28,7 +29,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@opennextjs/cloudflare": "^1.6.5",
     "@payloadcms/admin-bar": "3.61.0",
-    "@payloadcms/db-d1-sqlite": "3.61.0",
+    "@payloadcms/db-postgres": "3.61.0",
     "@payloadcms/graphql": "3.61.0",
     "@payloadcms/live-preview-react": "3.61.0",
     "@payloadcms/next": "3.61.0",
@@ -86,9 +87,5 @@
       }
     }
   },
-  "overrides": {
-    "@payloadcms/db-d1-sqlite": {
-      "drizzle-kit": "0.30.6"
-    }
-  }
+  "overrides": {}
 }
