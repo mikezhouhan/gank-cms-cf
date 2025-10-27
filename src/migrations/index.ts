@@ -1,10 +1,9 @@
-// PostgreSQL migrations will be generated here
-// Run: pnpm payload migrate:create
+import * as migration_20251026_142947 from './20251026_142947';
 
-import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
-
-export const migrations: {
-  up: (args: MigrateUpArgs) => Promise<void>
-  down: (args: MigrateDownArgs) => Promise<void>
-  name: string
-}[] = []
+export const migrations = [
+  {
+    up: migration_20251026_142947.up,
+    down: migration_20251026_142947.down,
+    name: '20251026_142947'
+  },
+];

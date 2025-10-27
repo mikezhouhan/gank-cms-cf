@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "db:reset": "psql postgresql://gank:GankInterview123@43.130.42.34:36432/gank -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'gank_cms_dev' AND pid <> pg_backend_pid();\" && psql postgresql://gank:GankInterview123@43.130.42.34:36432/postgres -c \"DROP DATABASE IF EXISTS gank_cms_dev;\" && psql postgresql://gank:GankInterview123@43.130.42.34:36432/postgres -c \"CREATE DATABASE gank_cms_dev;\"",
     "deploy": "pnpm run deploy:database && pnpm run deploy:app",
     "deploy:app": "opennextjs-cloudflare build -e production && opennextjs-cloudflare deploy -e production",
     "deploy:database": "NODE_ENV=production CLOUDFLARE_ENV=production PAYLOAD_SECRET=ignore payload migrate",

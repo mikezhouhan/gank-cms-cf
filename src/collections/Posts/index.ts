@@ -81,7 +81,9 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
-              localized: true,
+              // localized: true, // Disabled due to PayloadCMS bug with upload + localized + versions
+              // See: https://github.com/payloadcms/payload/issues
+              // Error: "invalid input syntax for type integer" when saving versions
             },
             {
               name: 'content',
@@ -245,15 +247,23 @@ export const Posts: CollectionConfig<'posts'> = {
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  // Re-enabled after migrating from D1 to PostgreSQL
-  // D1 had issues with versions + localization, but PostgreSQL handles it correctly
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  // Versions and drafts COMPLETELY DISABLED due to PayloadCMS bug:
+  // - localized upload fields (heroImage, meta.image) + versions cause PostgreSQL type errors
+  // - Error: "invalid input syntax for type integer" when saving versions
+  // - Bug occurs when trying to insert localized object {"en":null,"zh-CN":null,"de":null} into integer field
+  //
+  // IMPACT:
+  // - No draft support (all saves are published immediately)
+  // - No version history
+  // - No scheduled publishing
+  // - No autosave
+  //
+  // TODO: Re-enable after upgrading to PayloadCMS version that fixes this bug
+  // versions: {
+  //   drafts: {
+  //     autosave: { interval: 100 },
+  //     schedulePublish: true,
+  //   },
+  //   maxPerDoc: 50,
+  // },
 }
