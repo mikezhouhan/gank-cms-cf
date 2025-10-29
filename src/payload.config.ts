@@ -12,6 +12,7 @@ import { r2Storage } from '@payloadcms/storage-r2'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
+import { Categories } from './collections/Categories'
 import localization from './i18n/localization'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Posts],
+  collections: [Users, Media, Posts, Categories],
   editor: lexicalEditor(),
   localization,
   secret: process.env.PAYLOAD_SECRET || '',

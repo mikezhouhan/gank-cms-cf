@@ -58,6 +58,15 @@ export const Posts: CollectionConfig = {
         {
           fields: [
             {
+              name: 'category',
+              type: 'relationship',
+              admin: {
+                position: 'sidebar',
+              },
+              relationTo: 'categories',
+              required: true,
+            },
+            {
               name: 'relatedPosts',
               type: 'relationship',
               admin: {
