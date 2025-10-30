@@ -8,7 +8,7 @@
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "deploy": "pnpm run deploy:database && pnpm run deploy:app",
     "deploy:app": "opennextjs-cloudflare build -e $CLOUDFLARE_ENV && opennextjs-cloudflare deploy -e $CLOUDFLARE_ENV",
-    "deploy:database": "NODE_ENV=production PAYLOAD_SECRET=ignore payload migrate && wrangler d1 execute D1 --command 'PRAGMA optimize' --remote",
+    "deploy:database": "NODE_ENV=development PAYLOAD_SECRET=ignore payload migrate && wrangler d1 export D1 --local --output /tmp/d1_export.sql && wrangler d1 execute D1 --remote --file /tmp/d1_export.sql && wrangler d1 execute D1 --command 'PRAGMA optimize' --remote && rm /tmp/d1_export.sql",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && rm -rf .open-next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",

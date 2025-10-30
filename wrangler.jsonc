@@ -20,9 +20,8 @@
   "d1_databases": [
     {
       "binding": "D1",
-      "database_id": "bc25027a-992c-4edf-b1d0-7d55b871113a",
       "database_name": "gank-cms",
-      // "remote": true,
+      "database_id": "12e7befd-64b6-4b25-a83b-5d2d7ca49a8e",
     },
   ],
   "services": [
@@ -43,7 +42,6 @@
     //   "bucket_name": "<BUCKET_NAME>",
     // },
   ],
-
   // Production environment configuration
   "env": {
     "production": {
@@ -51,8 +49,8 @@
       "d1_databases": [
         {
           "binding": "D1",
-          "database_id": "bc25027a-992c-4edf-b1d0-7d55b871113a",
-          "database_name": "gank-cms-production",
+          "database_id": "12e7befd-64b6-4b25-a83b-5d2d7ca49a8e",
+          "database_name": "gank-cms",
           "remote": true,
         },
       ],
