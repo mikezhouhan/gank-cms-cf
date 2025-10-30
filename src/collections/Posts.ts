@@ -30,6 +30,13 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
+      name: 'heroImage',
+      label: 'Hero Image',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
       type: 'tabs',
       tabs: [
         {

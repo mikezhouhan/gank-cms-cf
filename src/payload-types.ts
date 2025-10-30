@@ -123,6 +123,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  name: string;
+  linkedin?: string | null;
+  twitter?: string | null;
+  avatar?: (number | null) | Media;
+  info?: string | null;
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -168,6 +173,7 @@ export interface Media {
 export interface Post {
   id: number;
   title: string;
+  heroImage?: (number | null) | Media;
   content: {
     root: {
       type: string;
@@ -272,6 +278,11 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  linkedin?: T;
+  twitter?: T;
+  avatar?: T;
+  info?: T;
   updatedAt?: T;
   createdAt?: T;
   enableAPIKey?: T;
@@ -314,6 +325,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  heroImage?: T;
   content?: T;
   category?: T;
   relatedPosts?: T;
