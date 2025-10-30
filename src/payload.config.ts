@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { r2Storage } from '@payloadcms/storage-r2'
+import { openapi, swaggerUI } from 'payload-oapi'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -43,6 +44,14 @@ export default buildConfig({
       bucket: cloudflare.env.R2,
       collections: { media: true },
     }),
+    openapi({
+      openapiVersion: '3.0',
+      metadata: {
+        title: 'Gank CMS API',
+        version: '1.0.0',
+      },
+    }),
+    swaggerUI({}),
   ],
 })
 
