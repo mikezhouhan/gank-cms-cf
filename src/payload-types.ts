@@ -90,7 +90,32 @@ export interface Config {
   };
   globals: {};
   globalsSelect: {};
-  locale: 'en' | 'es' | 'de' | 'ja' | 'ar';
+  locale:
+    | 'en'
+    | 'zh-CN'
+    | 'zh-TW'
+    | 'es'
+    | 'fr'
+    | 'de'
+    | 'pt'
+    | 'ja'
+    | 'ko'
+    | 'hi'
+    | 'ar'
+    | 'id'
+    | 'vi'
+    | 'th'
+    | 'ru'
+    | 'it'
+    | 'nl'
+    | 'tr'
+    | 'pl'
+    | 'sv'
+    | 'ms'
+    | 'he'
+    | 'uk'
+    | 'cs'
+    | 'fi';
   user: User & {
     collection: 'users';
   };
